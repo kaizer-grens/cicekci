@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sana Bir Buket</title>
+<meta name="description" content="Açmak için dokun.">
+<meta property="og:title" content="Sana bir şey hazırladım">
+<meta property="og:description" content="Açmak için dokun.">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#E6EDE7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1D19" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Cg fill='%23E0608A'%3E%3Ccircle cy='-22' r='20'/%3E%3Ccircle cx='21' cy='-7' r='20'/%3E%3Ccircle cx='13' cy='18' r='20'/%3E%3Ccircle cx='-13' cy='18' r='20'/%3E%3Ccircle cx='-21' cy='-7' r='20'/%3E%3C/g%3E%3Ccircle r='12' fill='%23F4B81F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Figtree:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+@property --accent{syntax:"<color>";inherits:true;initial-value:#D9486E}
+
+:root{
+  /* Düzen: tek sütun, telefon öncelikli. Her ekranda tek soru; sonuçta buket, etiket, mesaj, fiş. */
+  --bg:#E6EDE7; --surface:#F5F9F5; --ink:#15302A; --muted:#557066; --line:rgba(21,48,42,.15);
+  --accent:#D9486E; --on-accent:#fff;
+  --paper:#FCF9F2; --paper-ink:#20302B; --paper-muted:#627069; --paper-line:rgba(32,48,43,.2);
+  --golge:rgba(12,36,28,.16);
+  --f-display:"Instrument Serif","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-hand:"Caveat","Segoe Print","Bradley Hand",cursive;
+  --f-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --t-xl:clamp(2rem,8.6vw,2.75rem);
+  --t-xxl:clamp(2.5rem,11.5vw,3.5rem);
+  color-scheme:light;
+  transition:--accent .7s ease;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0E1D19; --surface:#162B25; --ink:#E8F1EC; --muted:#9BB4A9; --line:rgba(232,241,236,.16);
+    --paper:#F1ECE0; --golge:rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100%;background:var(--bg);color:var(--ink);
+  font:400 1.0625rem/1.5 var(--f-body);-webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(95% 50% at 50% 0%,color-mix(in oklab,var(--accent) 24%,transparent),transparent 72%);
+}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+.sayfa{
+  position:relative;z-index:1;max-width:30rem;margin-inline:auto;
+  padding-inline:1.25rem;
+  padding-block:max(1rem,env(safe-area-inset-top,0px)) max(2rem,env(safe-area-inset-bottom,0px));
+  min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;
+}
+.ekran{flex:1;display:flex;flex-direction:column;min-width:0}
+.gir{animation:yuksel .5s both cubic-bezier(.2,.8,.2,1)}
+.ust{margin:0;font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* Giriş */
+.giris{justify-content:center;gap:1.125rem}
+.tabela{
+  align-self:flex-start;display:inline-flex;align-items:center;gap:.55rem;margin:0;
+  font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:.45rem .85rem;
+}
+.tabela::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:#3FB27F;box-shadow:0 0 0 3px rgba(63,178,127,.25)}
+.vitrin{width:100%;height:auto;overflow:visible;border-bottom:1px solid var(--line)}
+.salla{animation:salla 5.5s calc(var(--i)*-0.9s) infinite alternate ease-in-out}
+.hitap{margin:0;font:600 1.75rem/1 var(--f-hand);color:var(--muted)}
+.giris h1{margin:0;font:400 var(--t-xxl)/.98 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+.giris h1 em{font-style:italic}
+.aciklama{margin:0;color:var(--muted);max-width:32ch}
+
+.dugme{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:3.25rem;
+  padding:1rem 1.75rem;border:0;border-radius:999px;cursor:pointer;text-decoration:none;
+  background:var(--accent);color:var(--on-accent);font:600 1rem/1 var(--f-body);
+  transition:transform .2s;
+}
+.dugme:active{transform:scale(.97)}
+.giris .dugme{align-self:flex-start;margin-top:.5rem}
+
+/* Adımlar */
+.ust-serit{display:flex;justify-content:space-between;align-items:center;min-height:2.75rem}
+.geri{appearance:none;background:none;border:0;cursor:pointer;padding:.6rem .6rem .6rem 0;font:500 .9375rem var(--f-body);color:var(--muted)}
+.geri::before{content:"←";margin-right:.4rem}
+.sayac{font-size:.8125rem;font-weight:500;letter-spacing:.08em;color:var(--muted);font-variant-numeric:tabular-nums}
+.ilerleme{height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.ilerleme i{display:block;height:100%;border-radius:3px;background:var(--accent);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.adim-govde{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.5rem;padding-block:1.5rem}
+.soru{margin:0;font:400 var(--t-xl)/1.04 var(--f-display);text-wrap:balance;outline:none}
+.ipucu{margin:0 0 1rem;color:var(--muted)}
+
+.secenekler{display:grid;gap:.625rem}
+.s-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.s-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.s-1{grid-template-columns:minmax(0,1fr)}
+.secenek{
+  appearance:none;min-width:0;cursor:pointer;font:inherit;color:inherit;
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  padding:.8rem .5rem .75rem;background:var(--surface);
+  border:1px solid var(--line);border-radius:1.125rem;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.secenek svg{width:100%;height:5.25rem;overflow:visible}
+.s-2 .secenek svg{height:6.75rem}
+.secenek:active{transform:scale(.97)}
+.secenek.secili{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.s-ad{font-weight:600;font-size:.9375rem;line-height:1.2;text-align:center}
+.s-alt{font-size:.8125rem;line-height:1.25;color:var(--muted);text-align:center}
+.s-1 .secenek{flex-direction:row;justify-content:space-between;padding:1.1rem 1.25rem}
+.s-1 .s-ad{font:400 1.5rem/1.1 var(--f-display);text-align:left}
+.s-1 .secenek::after{content:"→";color:var(--muted)}
+
+/* Sonuç */
+.sonuc{padding-top:.75rem}
+.sonuc-bas{text-align:center;display:grid;gap:.45rem}
+.sonuc-bas h1{margin:0;font:400 var(--t-xl)/1.02 var(--f-display);text-wrap:balance}
+.buket{display:block;width:100%;max-width:21rem;height:auto;margin-inline:auto;overflow:visible;filter:drop-shadow(0 16px 18px var(--golge))}
+
+.etiket{
+  position:relative;margin-top:-1rem;padding:2.6rem 1.375rem 1.5rem;rotate:-1.2deg;
+  background:var(--paper);color:var(--paper-ink);border-radius:1.25rem;box-shadow:0 14px 30px var(--golge);
+}
+.etiket::before{content:"";position:absolute;left:50%;bottom:calc(100% - 1.3rem);width:1.5px;height:3.6rem;background:var(--muted);transform-origin:bottom;transform:rotate(7deg)}
+.etiket-delik{position:absolute;top:.9rem;left:50%;translate:-50% 0;width:.9rem;height:.9rem;border-radius:50%;background:var(--bg);box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
+.etiket .ust{text-align:center;color:var(--paper-muted)}
+.etiket-soz{margin:.4rem 0 .9rem;font:italic 400 clamp(1.75rem,7.6vw,2.25rem)/1.08 var(--f-display);text-align:center;text-wrap:balance}
+.etiket p{margin:0}
+.etiket-liste{list-style:none;margin:1.25rem 0 0;padding:1.1rem 0 0;display:grid;gap:.9rem;border-top:1px dashed var(--paper-line)}
+.etiket-liste b{display:block;margin-bottom:.15rem;font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-muted)}
+
+.mesaj{margin-top:3.5rem;display:grid;gap:1rem}
+.mesaj-cicek{width:3.5rem;height:3.5rem;overflow:visible}
+.mesaj h2{margin:0 0 .25rem;font:400 var(--t-xxl)/.98 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+.mesaj h2 em{font-style:italic}
+.mesaj p{margin:0;max-width:34ch}
+.imza{font:600 2.125rem/1 var(--f-hand);rotate:-3deg;transform-origin:left;margin-top:.5rem!important}
+
+.fis{
+  margin-top:3.25rem;padding:1.25rem 1.125rem 2rem;rotate:.8deg;
+  background:var(--paper);color:var(--paper-ink);font:400 .8125rem/1.5 var(--f-mono);
+  display:grid;gap:.35rem;
+  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/16px 100%;
+  mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/16px 100%;
+}
+.fis h3{margin:0;font:inherit;font-weight:600;letter-spacing:.22em;text-transform:uppercase;text-align:center}
+.fis-tarih{margin:0 0 .6rem;text-align:center;color:var(--paper-muted)}
+.fis-satir{display:flex;align-items:baseline;gap:.5rem;min-width:0}
+.fis-satir i{flex:1;min-width:1rem;border-bottom:1px dotted var(--paper-line);translate:0 -3px}
+.fis-satir span{min-width:0}
+.fis-satir span:last-child{text-align:right}
+.fis-not{margin:.7rem 0 0;text-align:center;color:var(--paper-muted)}
+.fis-toplam{margin-top:.6rem;padding-top:.7rem;border-top:1px dashed var(--paper-line);font-weight:600}
+
+.eylemler{margin-top:2.75rem;display:grid;justify-items:center;gap:.6rem;text-align:center}
+.kucuk{margin:0;font-size:.8125rem;color:var(--muted)}
+.dugme-yazi{appearance:none;background:none;border:0;cursor:pointer;padding:.75rem;font:500 .9375rem var(--f-body);color:var(--muted);text-decoration:underline;text-underline-offset:.25em}
+
+.sonra{animation:yuksel .8s both cubic-bezier(.2,.8,.2,1);animation-delay:calc(3s + var(--n)*.35s)}
+
+/* Buketin açılışı */
+.canli .k-arka{animation:belir .6s both}
+.canli .dalcik{animation:buyu .7s calc(.25s + var(--i)*70ms) both cubic-bezier(.2,.8,.2,1)}
+.canli .sap{stroke-dasharray:1;animation:ciz .8s calc(.4s + var(--i)*90ms) both ease-out}
+.canli .yaprak{animation:buyu .5s calc(.95s + var(--i)*90ms) both}
+.canli .bas{animation:ac .7s calc(1.15s + var(--i)*130ms) both cubic-bezier(.2,1.4,.4,1)}
+.canli .k-on{animation:sar .6s 2.25s both}
+.canli .fiyonk{animation:ac .5s 2.65s both cubic-bezier(.2,1.6,.4,1)}
+
+@keyframes yuksel{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes belir{from{opacity:0}to{opacity:1}}
+@keyframes ciz{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes ac{from{transform:scale(0) rotate(-30deg)}to{transform:scale(1) rotate(0)}}
+@keyframes buyu{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes sar{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes salla{from{transform:rotate(-1.6deg)}to{transform:rotate(1.6deg)}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="sayfa">
+  <section id="giris" class="ekran giris gir">
+    <p class="tabela">Açık, tek müşteri sensin</p>
+    <div id="vitrin"></div>
+    <p id="hitap" class="hitap" hidden></p>
+    <h1>Seni çiçekçiye götüremedim, <em>çiçekçiyi sana getirdim.</em></h1>
+    <p class="aciklama">Altı küçük soru soracağım. Sen seç, buketini ben hazırlayayım.</p>
+    <button id="basla" class="dugme" type="button">İçeri gir</button>
+  </section>
+
+  <section id="adim" class="ekran" hidden>
+    <header class="ust-serit">
+      <button id="geri" class="geri" type="button">Geri</button>
+      <span id="sayac" class="sayac">1 / 6</span>
+    </header>
+    <div class="ilerleme"><i id="cubuk"></i></div>
+    <div id="adim-govde" class="adim-govde"></div>
+  </section>
+
+  <section id="sonuc" class="ekran sonuc" hidden></section>
+</div>
+
+<script>
+/* ============================================================
+   BURAYI DOLDUR. Sitede değiştirmen gereken tek yer burası.
+   ============================================================ */
+const AYAR = {
+  isim: "Hanin",      // Ona nasıl sesleniyorsan. Örnek: "Elif" ya da "Güzelim". Boş bırakırsan isimsiz çalışır.
+  imza: "",      // Mesajın altına yazılacak ad. Örnek: "Fadi". Boş bırakırsan imza çıkmaz.
+  whatsapp: "",  // İstersen numaran, başında 90 ile: "905xxxxxxxxx". Boş kalırsa kişiyi kendisi seçer.
+  mesafe: "1053 km",     // Aranızdaki mesafe, fişte görünür. Boş bırakırsan o satır çıkmaz.
+  hazirlayan: "Kaizer Grens"  // Fişte "Hazırlayan" satırında görünen ad. Boş bırakırsan o satır çıkmaz.
+};
+
+/* ---------- Çiçekler, renkler ve anlamları ---------- */
+const CICEKLER = {
+  gul: { ad:"Gül", oz:"Gül, çiçek dilinin en bilinen kelimesi. Anlamı belli, sevgi.", renkler:{
+    kirmizi:{ad:"Kırmızı", p:["#D7263D","#EE5468","#A1142A"], ui:"#D7263D", soz:"Sevgi, hem de en net hâli", not:"Kırmızısı işi hiç dolandırmaz. Ne dediğini biliyorsun, bunu ben değil çiçek söylüyor."},
+    pembe:{ad:"Pembe", p:["#F38BA8","#F9B5C7","#D45C7C"], ui:"#E0608A", soz:"Zarafet ve hayranlık", not:"Pembesi “iyi ki varsın” demenin kibar yolu. İtirazım yok."},
+    beyaz:{ad:"Beyaz", p:["#FBFBF8","#FFFFFF","#CBD5D8"], ui:"#4E9A78", soz:"Sadakat ve temiz bir kalp", not:"Beyazı gösterişsiz ama sağlam bir bağlılığı anlatır. Çok konuşmaz, sözünde durur."},
+    seftali:{ad:"Şeftali", p:["#F7A77B","#FBC6A4","#DD7A49"], ui:"#E8804F", soz:"İçtenlik ve teşekkür", not:"Şeftali tonu teşekkür demek. Neye teşekkür ettiğimi sen anlarsın."}
+  }},
+  papatya: { ad:"Papatya", oz:"Papatya gösterişi sevmez. Neşenin ve içtenliğin çiçeğidir.", renkler:{
+    beyaz:{ad:"Beyaz", p:["#FFFFFF","#FFFFFF","#D3DCE0"], k:["#F4B81F","#D99413"], ui:"#4E9A78", soz:"Masumiyet ve içten sevgi", not:"“Seviyor, sevmiyor” falına gerek yok, cevabı zaten belli."},
+    pembe:{ad:"Pembe", p:["#F7A8C4","#FBC9DB","#DE7AA1"], k:["#F4B81F","#D99413"], ui:"#E0608A", soz:"Şefkat ve tatlı bir neşe", not:"Pembesi insanın yüzünü kendiliğinden güldürür. Bugün sana lazım olan da bu."},
+    sari:{ad:"Sarı", p:["#FFD23F","#FFE07A","#E3A51A"], k:["#8A5A22","#6B4216"], ui:"#E3A51A", soz:"Güneş gibi bir neşe", not:"Sarısı odaya güneş getirir. Hasta yatağının yanına iyi gider."}
+  }},
+  lale: { ad:"Lale", oz:"Lale bu toprakların çiçeği. Çiçek dilinde tam ve eksiksiz sevgiyi anlatır.", renkler:{
+    pembe:{ad:"Pembe", p:["#F27CA3","#F8A9C2","#D4557F"], ui:"#E0608A", soz:"Şefkat ve iyi dilekler", not:"Pembesi “iyi ol” demek. Tam bugüne göre seçmişsin."},
+    kirmizi:{ad:"Kırmızı", p:["#DC2F45","#F0596B","#A8172C"], ui:"#D7263D", soz:"Açıkça söylenmiş sevgi", not:"Kırmızısı itiraf sayılıyor. Ben bir şey demedim, sen seçtin."},
+    mor:{ad:"Mor", p:["#8E5BD8","#B08AE8","#6A3CB0"], ui:"#8B5CD6", soz:"Asalet ve hayranlık", not:"Moru hayranlık demek. Zevkine diyecek yok."},
+    turuncu:{ad:"Turuncu", p:["#F5873A","#FAA968","#D5651C"], ui:"#EE7B30", soz:"Sıcaklık ve enerji", not:"Turuncusu enerji verir. Şu an sana lazım olan da o."}
+  }},
+  aycicegi: { ad:"Ayçiçeği", oz:"Ayçiçeği yüzünü hep güneşe döner. Sadakatin ve hayranlığın çiçeğidir.", renkler:{
+    sari:{ad:"Güneş sarısı", p:["#FFCB2E","#FFDD6B","#E5A30F"], ui:"#E3A51A", soz:"Sadakat ve hayranlık", not:"Güneş kim, ayçiçeği kim, onu sen çöz."},
+    bal:{ad:"Bal rengi", p:["#F2A122","#F8BE5A","#CF7C0E"], ui:"#DE8E1E", soz:"Sıcak, güven veren bir yakınlık", not:"Bal tonu, yanında rahat ettiğin insanı anlatır. Umarım o benim."},
+    kizil:{ad:"Kızıl", p:["#C9502E","#E07A52","#963519"], ui:"#B5422C", soz:"Güç ve kararlılık", not:"Kızılı güçlü duranların çiçeği. Bu hastalık seni yıkmaz, yakında ayaktasın."}
+  }},
+  lavanta: { ad:"Lavanta", oz:"Lavanta huzurun çiçeği. Kokusu sakinleştirir, rahat uyunsun diye başucuna konur.", renkler:{
+    mor:{ad:"Mor", p:["#8A63D2","#AE8FE6","#6941B4"], ui:"#8B5CD6", soz:"Huzur ve bağlılık", not:"Moru sessiz sakin bir bağlılığı anlatır. Çok konuşmaz ama hep oradadır. Tanıdık geldi mi?"},
+    lila:{ad:"Lila", p:["#BFA2EC","#D9C6F5","#9C7BD6"], ui:"#A98BE0", soz:"İncelik ve tatlı bir heyecan", not:"Lilası ilk günlerin heyecanını anlatır. Bende hâlâ duruyor, haberin olsun."},
+    beyaz:{ad:"Beyaz", p:["#FFFFFF","#F4F2FA","#D5D2E3"], ui:"#4E9A78", soz:"Dinginlik ve temiz bir nefes", not:"Beyazı ferahlık demek. Derin bir nefes al, dinlen, gerisi hallolur."}
+  }},
+  orkide: { ad:"Orkide", oz:"Orkide nadir bulunan güzelliğin çiçeği. Narin görünür ama sandığından dayanıklıdır.", renkler:{
+    beyaz:{ad:"Beyaz", p:["#FFFFFF","#F6F3F8","#D5CEDB"], k:["#D6457F"], ui:"#4E9A78", soz:"Zarafet ve sade güzellik", not:"Beyazı süse ihtiyaç duymayan güzelliği anlatır. Yorum yapmıyorum, sen anladın."},
+    pembe:{ad:"Pembe", p:["#F29BC1","#F8C3DA","#D66A9A"], k:["#B8246A"], ui:"#E0608A", soz:"İncelik ve sevinç", not:"Pembesi sevinç demek. Sen iyileş, o da gelir."},
+    mor:{ad:"Mor", p:["#9B5DE0","#BD93EE","#6E3BB5"], k:["#4C1D95"], ui:"#8B5CD6", soz:"Hayranlık ve saygı", not:"Moru hayranlık ve saygı demek. Bunu çiçek söylüyor, ben sadece altına imza atıyorum."}
+  }}
+};
+
+const ADETLER = {
+  1:{ad:"Tek dal", alt:"sade ve net", fis:"1 dal", anlam:"Tek dal, “bir tanesin” demek. Kısa ve net, tam benlik."},
+  3:{ad:"Üç dal", alt:"küçük bir buket", fis:"3 dal", anlam:"Üç dal, üç kelimelik bir cümlenin kısaltması. Hangi cümle, onu yazdırma bana."},
+  7:{ad:"Yedi dal", alt:"kucak dolusu", fis:"7 dal", anlam:"Yedi dal, haftanın her gününe bir tane. Pazartesi dahil."}
+};
+
+const YANLAR = {
+  cipso:{ad:"Cipso", yel:[[-48,215,14],[-30,265,-14],[-12,290,12],[8,295,-12],[26,270,14],[44,225,-14]], anlam:"Cipso küçüktür ama buketi buket yapan odur. Detaycısın, belli."},
+  okaliptus:{ad:"Okaliptüs", yel:[[-44,228,-18],[-20,288,16],[18,292,-16],[42,232,18]], anlam:"Okaliptüs şifa bitkisi sayılır. Tam zamanında seçtin."},
+  egrelti:{ad:"Eğrelti otu", yel:[[-50,215,-16],[-27,280,14],[25,284,-14],[48,220,16]], anlam:"Eğrelti içtenliği simgeler. Bir de gölge yapar, yorulunca altına geçersin."},
+  sade:{ad:"Sade kalsın", kisa:"Sade", anlam:"Yanına bir şey istemedin. Sade güzeldir, katılıyorum."}
+};
+
+const KAGITLAR = {
+  kraft:{ad:"Kraft kâğıt", r:["#C8A47A","#D8B992","#A6835A"], anlam:"Kraft kâğıt süsü sevmez, olanı olduğu gibi sunar. Biraz bana benziyor."},
+  beyaz:{ad:"Beyaz pelür", r:["#F2EFE8","#FFFFFF","#D6D1C5"], anlam:"Beyaz pelür ferahlık demek, temiz bir sayfa gibi."},
+  pudra:{ad:"Pudra pembe", r:["#F0BFCB","#F8D7DF","#D897A9"], anlam:"Pudra pembesi yumuşaklık demek, battaniye gibi. Sarın, üşüme."},
+  gece:{ad:"Gece yeşili", r:["#27483E","#335B4E","#18332B"], anlam:"Koyu kâğıt çiçeği öne çıkarır. Asıl olay çiçekte, kâğıt sadece fon."}
+};
+
+const IHTIYAC = {
+  uyku:{ad:"Uyumak", mesaj:"Uyumak demişsin. O zaman telefonu bırak ve uyu. Mesajlar bekler, ben de beklerim."},
+  gulmek:{ad:"Biraz gülmek", mesaj:"Gülmek demişsin. Birazdan komik video yağmuru başlıyor, telefonu sessize alma."},
+  izle:{ad:"Bir şeyler izlemek", mesaj:"İzlemek demişsin. Battaniyeyi çek, bir şey aç. Öneri lazımsa yaz ama zevkime güvenme."},
+  dokunma:{ad:"Kimse bana dokunmasın", mesaj:"Kimse dokunmasın demişsin. Bu konuda en güvenilir kişi benim, zaten kilometrelerce uzaktayım."}
+};
+
+/* ---------- Çizim yardımcıları ---------- */
+const f = n => (+n).toFixed(1);
+const kucuk = s => s.toLocaleLowerCase("tr");
+const P = (len,w) => `M0 0C${f(w)} ${f(-len*.3)} ${f(w)} ${f(-len*.85)} 0 ${f(-len)}C${f(-w)} ${f(-len*.85)} ${f(-w)} ${f(-len*.3)} 0 0Z`;
+const cevir = (n,fn,off=0) => Array.from({length:n},(_,i)=>`<g transform="rotate(${f(off+i*360/n)})">${fn(i)}</g>`).join("");
+const rgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const ton = (h,k) => "#"+rgb(h).map(v=>Math.round(k<1? v*k : v+(255-v)*(k-1)).toString(16).padStart(2,"0")).join("");
+function parlaklik(h){const [r,g,b]=rgb(h).map(v=>{v/=255;return v<=.03928? v/12.92 : Math.pow((v+.055)/1.055,2.4)});return .2126*r+.7152*g+.0722*b}
+function ustRenk(h){const L=parlaklik(h);return (1.05/(L+.05)) >= ((L+.05)/.065) ? "#FFFFFF" : "#16241F"}
+
+/* Tek bir çiçek başı. Merkez (0,0), yukarı yön -y, yarıçap yaklaşık 40. */
+function basCiz(tur,r){
+  const [a,b,c]=r.p, k=r.k||[];
+  switch(tur){
+    case "gul": return (
+      `<path d="${P(56,13)}" transform="rotate(118)" fill="#3E8A5E"/><path d="${P(54,13)}" transform="rotate(-128)" fill="#357A52"/>`+
+      cevir(5,()=>`<circle cy="-19" r="22" fill="${a}" stroke="${c}" stroke-width="1.2"/>`)+
+      cevir(5,()=>`<circle cy="-12" r="17" fill="${b}" stroke="${c}" stroke-width="1.2"/>`,36)+
+      cevir(4,()=>`<circle cy="-6.5" r="11.5" fill="${a}" stroke="${c}" stroke-width="1.2"/>`,18)+
+      `<circle r="7.5" fill="${c}"/><path d="M-4 1c0-4 6-5 7-1s-4 6-7 3" fill="none" stroke="${b}" stroke-width="1.4" stroke-linecap="round"/>`);
+    case "papatya": return (
+      cevir(10,()=>`<path d="${P(40,7.5)}" fill="${c}"/>`,18)+
+      cevir(10,()=>`<path d="${P(40,7.5)}" fill="${a}" stroke="${c}" stroke-width=".8"/>`)+
+      `<circle r="11" fill="${k[0]}"/><circle r="6.2" fill="${k[1]}"/>`);
+    case "lale": return (
+      `<path d="M0 26C-15 10-11-22 0-33C11-22 15 10 0 26Z" fill="${c}"/>`+
+      `<path d="M0 27C-24 26-31-4-21-30C-9-22 2-4 4 14C4 20 2 25 0 27Z" fill="${a}" stroke="${c}" stroke-width=".8"/>`+
+      `<path d="M0 27C24 26 31-4 21-30C9-22-2-4-4 14C-4 20-2 25 0 27Z" fill="${b}" stroke="${c}" stroke-width=".8"/>`);
+    case "aycicegi": {
+      const pp = len => `M0 -13C7.5 -22 6.5 ${-len+8} 0 ${-len}C-6.5 ${-len+8} -7.5 -22 0 -13Z`;
+      return (
+        cevir(14,()=>`<path d="${pp(43)}" fill="${c}"/>`,12.86)+
+        cevir(14,()=>`<path d="${pp(40)}" fill="${a}" stroke="${c}" stroke-width=".7"/>`)+
+        `<circle r="17" fill="#5A3A1F"/><circle r="12" fill="none" stroke="#7B5330" stroke-width="3.2" stroke-dasharray="1.6 3"/><circle r="6" fill="#3B2412"/>`);
+    }
+    case "lavanta": {
+      let s=`<path d="M0 48V-40" stroke="#5E9470" stroke-width="2.2" stroke-linecap="round"/>`;
+      for(let j=0;j<8;j++){
+        const y=36-j*11, w=8.5-j*.6, q=5.4-j*.22;
+        s+=`<ellipse cx="${f(-w)}" cy="${y}" rx="${f(q*.72)}" ry="${f(q)}" transform="rotate(-28 ${f(-w)} ${y})" fill="${j%2?a:c}"/>`+
+           `<ellipse cx="${f(w)}" cy="${y}" rx="${f(q*.72)}" ry="${f(q)}" transform="rotate(28 ${f(w)} ${y})" fill="${j%2?c:a}"/>`+
+           `<ellipse cy="${y-4}" rx="${f(q*.7)}" ry="${f(q)}" fill="${b}"/>`;
+      }
+      return s+`<ellipse cy="-47" rx="3.2" ry="5" fill="${b}"/>`;
+    }
+    case "orkide": {
+      const cz=`stroke="${c}" stroke-width=".8"`;
+      return (
+        `<path d="${P(41,11)}" fill="${b}" ${cz}/><path d="${P(40,11)}" transform="rotate(128)" fill="${b}" ${cz}/><path d="${P(40,11)}" transform="rotate(-128)" fill="${b}" ${cz}/>`+
+        `<path d="M0 0C24-4 30-30 0-40C-30-30-24-4 0 0Z" transform="rotate(74)" fill="${a}" ${cz}/>`+
+        `<path d="M0 0C24-4 30-30 0-40C-30-30-24-4 0 0Z" transform="rotate(-74)" fill="${a}" ${cz}/>`+
+        `<path d="M0 0C10 3 13 14 6 21C2 24-2 24-6 21C-13 14-10 3 0 0Z" fill="${k[0]}"/><circle cy="1" r="4.2" fill="#FBE38A"/><circle cy="1" r="1.4" fill="${k[0]}"/>`);
+    }
+  }
+  return "";
+}
+
+/* Yan dallar. Taban (0,0), yukarı doğru L uzunluğunda, b kadar eğimli. */
+function dalcik(tur,L,b){
+  const pt = t => ({x:2*t*(1-t)*b, y:-t*L, a:Math.atan2(2*(1-2*t)*b,L)*180/Math.PI});
+  const yon = (p,a,u) => {const q=a*Math.PI/180;return {x:p.x+u*Math.sin(q), y:p.y-u*Math.cos(q)}};
+  const govde = (renk,w) => `<path d="M0 0Q${f(b)} ${f(-L/2)} 0 ${f(-L)}" fill="none" stroke="${renk}" stroke-width="${w}" stroke-linecap="round"/>`;
+  let s="";
+  if(tur==="cipso"){
+    const top=(p,q)=>`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${q}" fill="#FFFFFF" stroke="#C4D1C9" stroke-width=".8"/>`;
+    s+=govde("#7FA38C",1.3);
+    [.5,.6,.69,.77,.84,.9,.95].forEach((t,i)=>{
+      const p=pt(t), y=i%2?1:-1, u=30-18*t+(i%3)*3, e=yon(p,p.a+y*42,u);
+      const m={x:(p.x+e.x)/2,y:(p.y+e.y)/2}, e2=yon(m,p.a+y*78,u*.55);
+      s+=`<path d="M${f(p.x)} ${f(p.y)}L${f(e.x)} ${f(e.y)}M${f(m.x)} ${f(m.y)}L${f(e2.x)} ${f(e2.y)}" stroke="#7FA38C" stroke-width="1" fill="none"/>`+top(e,3.4)+top(e2,2.7);
+    });
+    s+=top({x:0,y:-L},3.6);
+  } else if(tur==="okaliptus"){
+    s+=govde("#6C9282",2);
+    [.3,.42,.53,.63,.72,.8,.87,.93].forEach((t,i)=>{
+      const p=pt(t), q=12-6.5*t;
+      [-1,1].forEach(y=>{
+        const e=yon(p,p.a+y*90,q*.9);
+        s+=`<ellipse cx="${f(e.x)}" cy="${f(e.y)}" rx="${f(q*.85)}" ry="${f(q)}" transform="rotate(${f(p.a+y*24)} ${f(e.x)} ${f(e.y)})" fill="${(i+(y>0?1:0))%2?"#9CC0B0":"#84AD9B"}"/>`;
+      });
+    });
+    s+=`<ellipse cy="${f(-L-4)}" rx="5" ry="6.5" fill="#9CC0B0"/>`;
+  } else if(tur==="egrelti"){
+    s+=govde("#3E7F58",1.6);
+    for(let t=.22,i=0;t<.97;t+=.05,i++){
+      const p=pt(t), len=6+30*Math.pow(1-t,.8);
+      [-1,1].forEach(y=>{ s+=`<path d="${P(len,len*.24)}" transform="translate(${f(p.x)} ${f(p.y)}) rotate(${f(p.a+y*64)})" fill="${i%2?"#4C9A6A":"#3F8A5D"}"/>`; });
+    }
+    s+=`<path d="${P(9,2.4)}" transform="translate(0 ${f(-L)})" fill="#4C9A6A"/>`;
+  }
+  return s;
+}
+
+/* Lale yandan çizildiği için diğerlerinden küçük kalıyor, biraz büyütüyoruz. */
+const OLCEK = {lale:1.3};
+
+/* Çiçek başlarının buketteki yerleri. Bağ noktası (200,400). */
+function yerlesim(tur,n){
+  if(tur==="lavanta"){
+    const F={1:[[0,245]],3:[[-15,225],[15,225],[0,258]],7:[[-36,205],[36,205],[-24,238],[24,238],[-12,215],[12,215],[0,258]]}[n];
+    const k={1:1.5,3:1.3,7:1.15}[n];
+    return F.map(([a,L])=>{const q=a*Math.PI/180;return {x:200+L*Math.sin(q),y:400-L*Math.cos(q),k}});
+  }
+  const D={1:[[200,178]],3:[[200,146],[154,214],[246,214]],7:[[200,110],[137.6,146],[262.4,146],[137.6,218],[262.4,218],[200,182],[200,254]]}[n];
+  const k={1:1.4,3:1.2,7:1}[n]*(OLCEK[tur]||1);
+  return D.map(([x,y])=>({x,y,k}));
+}
+
+function kagitArka(id,s){
+  const c=KAGITLAR[id].r;
+  return `<g transform="translate(200 0) scale(${s} 1) translate(-200 0)"><g class="k-arka">`+
+    `<path d="M44 232L118 96L200 168L282 96L356 232L222 408L178 408Z" fill="${c[2]}"/>`+
+    `<path d="M118 96L200 168L282 96L262 150L200 196L138 150Z" fill="${ton(c[2],.9)}"/></g></g>`;
+}
+function fiyonk(renk){
+  const k=ton(renk,.76), a=ton(renk,1.25);
+  return `<g transform="translate(200 405)"><g class="fiyonk">`+
+    `<path d="M-3 4L-24 56L-13 49L-7 60L5 6Z" fill="${k}"/><path d="M3 4L24 56L13 49L7 60L-5 6Z" fill="${k}"/>`+
+    `<path d="M0 0C-12-24-46-22-42 0C-46 18-12 16 0 0Z" fill="${renk}"/><path d="M0 0C12-24 46-22 42 0C46 18 12 16 0 0Z" fill="${renk}"/>`+
+    `<path d="M-6 0C-16-11-32-11-33 0C-32 8-16 7-6 0Z" fill="${k}" opacity=".6"/><path d="M6 0C16-11 32-11 33 0C32 8 16 7 6 0Z" fill="${k}" opacity=".6"/>`+
+    `<rect x="-7.5" y="-9" width="15" height="18" rx="5" fill="${a}"/></g></g>`;
+}
+function kagitOn(id,s,renk){
+  const c=KAGITLAR[id].r;
+  return `<g transform="translate(200 0) scale(${s} 1) translate(-200 0)"><g class="k-on">`+
+    `<path d="M178 408L222 408L246 480L154 480Z" fill="${c[0]}"/>`+
+    `<path d="M190 408L182 480M210 408L218 480" stroke="${c[2]}" stroke-width="1.2" opacity=".7"/>`+
+    `<path d="M44 232L230 350L222 408L178 408Z" fill="${c[0]}"/>`+
+    `<path d="M356 232L170 350L178 408L222 408Z" fill="${c[1]}"/>`+
+    `<path d="M356 232L170 350" stroke="${c[2]}" stroke-width="1.2" opacity=".8"/>`+
+    `<path d="M44 232L199 330" stroke="${c[2]}" stroke-width="1.2" opacity=".5"/>`+
+    `<rect x="176" y="398" width="48" height="14" rx="3" fill="${ton(renk,.76)}"/></g></g>`+fiyonk(renk);
+}
+
+/* Buketin tamamı. d: seçimler. o.sar=false ise kâğıtsız, o.vb ile özel görüş alanı. */
+function buketCiz(d,o={}){
+  const n=d.adet||1, sar=o.sar!==false && !!d.kagit;
+  const s={1:.62,3:.8,7:1}[n], ac={1:.55,3:.78,7:1}[n], boy={1:.92,3:.96,7:1}[n];
+  const cicek=CICEKLER[d.cicek], r=cicek.renkler[d.renk], H=yerlesim(d.cicek,n);
+  const ince=d.cicek==="lavanta", alt=sar?498:466;
+  let g="";
+  if(sar) g+=kagitArka(d.kagit,s);
+  const Y=YANLAR[d.yan];
+  if(Y && Y.yel) Y.yel.forEach(([a,L,b],i)=>{ g+=`<g transform="translate(200 400) rotate(${f(a*ac)})"><g class="dalcik" style="--i:${i}">${dalcik(d.yan,L*boy,b)}</g></g>`; });
+  const kalin=ince?2.6:(n===1?5:4);
+  H.forEach((h,i)=>{
+    const cx=ince? (200+h.x)/2 : 200+(h.x-200)*.28, cy=ince? (400+h.y)/2 : (400+h.y)/2+14;
+    h.cx=cx; h.cy=cy;
+    g+=`<path class="sap" style="--i:${i}" pathLength="1" d="M${f(200+(i-(n-1)/2)*5)} ${alt}L200 400Q${f(cx)} ${f(cy)} ${f(h.x)} ${f(h.y)}" fill="none" stroke="${i%2?"#4F9A6B":"#3F8758"}" stroke-width="${kalin}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  });
+  if(!ince) H.forEach((h,i)=>{
+    const t=.55, x=(1-t)*(1-t)*200+2*(1-t)*t*h.cx+t*t*h.x, y=(1-t)*(1-t)*400+2*(1-t)*t*h.cy+t*t*h.y;
+    const dis=h.x<199?-1:h.x>201?1:(i%2?1:-1);
+    g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${dis*52})"><path class="yaprak" style="--i:${i}" d="${P(40,10)}" fill="${i%2?"#3B8259":"#4F9A6B"}"/></g>`;
+  });
+  const oyna=[0,17,-23,31,-11,8,-19];
+  H.forEach((h,i)=>{
+    const egim=Math.atan2(h.x-200,400-h.y)*180/Math.PI;
+    const don=(d.cicek==="lale"||ince)? egim : egim+oyna[i%7];
+    g+=`<g transform="translate(${f(h.x)} ${f(h.y)}) rotate(${f(don)}) scale(${h.k})"><g class="bas" style="--i:${i}">${basCiz(d.cicek,r)}</g></g>`;
+  });
+  if(sar) g+=kagitOn(d.kagit,s,r.ui);
+  else g+=`<rect x="${f(200-6-n)}" y="394" width="${12+2*n}" height="11" rx="3" fill="${ton(r.ui,.8)}"/>`;
+  const vb=o.vb||{1:"60 50 280 470",3:"30 40 340 480",7:"0 30 400 490"}[n];
+  const etiket=o.etiket?` role="img" aria-label="${o.etiket}"`:` aria-hidden="true"`;
+  return `<svg class="${o.cls||""}" viewBox="${vb}"${etiket}>${g}</svg>`;
+}
+
+const basSvg = (tur,r,cls="") => `<svg class="${cls}" viewBox="-52 -56 104 112" aria-hidden="true"><g transform="scale(${OLCEK[tur]||1})">${basCiz(tur,r)}</g></svg>`;
+
+function vitrinCiz(){
+  const xs=[46,108,170,232,294,354], ys=[122,88,134,98,142,106], idler=["lavanta","gul","papatya","aycicegi","lale","orkide"];
+  return `<svg class="vitrin" viewBox="0 20 400 230" aria-hidden="true">`+idler.map((id,i)=>{
+    const r=Object.values(CICEKLER[id].renkler)[0], x=xs[i], y=ys[i], e=i%2?9:-9;
+    const my=(250+y)/2+18;
+    return `<g class="salla" style="transform-origin:${x}px 250px;--i:${i}">`+
+      `<path d="M${x} 250Q${x+e} ${f((250+y)/2)} ${x} ${y}" fill="none" stroke="#5B9870" stroke-width="3.5" stroke-linecap="round"/>`+
+      `<path d="${P(34,9)}" transform="translate(${f(x+e*.45)} ${f(my)}) rotate(${i%2?-55:55})" fill="#4F9A6B"/>`+
+      `<g transform="translate(${x} ${y}) scale(${f(.86*(OLCEK[id]||1))})">${basCiz(id,r)}</g></g>`;
+  }).join("")+`</svg>`;
+}
+
+/* ---------- Adımlar ---------- */
+const ilkRenk = id => Object.keys(CICEKLER[id].renkler)[0];
+const ADIMLAR = [
+  { id:"cicek", soru:"Bugün gönlünden hangi çiçek geçiyor?", ipucu:()=>"İlk aklına gelen, doğru olandır.", duzen:3,
+    secenekler:()=>Object.entries(CICEKLER).map(([id,c])=>({id, ad:c.ad, svg:basSvg(id,c.renkler[ilkRenk(id)])})) },
+  { id:"renk", soru:"Hangi renk olsun?", ipucu:d=>`${CICEKLER[d.cicek].ad} için elimde bunlar var.`,
+    secenekler:d=>Object.entries(CICEKLER[d.cicek].renkler).map(([id,r])=>({id, ad:r.ad, svg:basSvg(d.cicek,r)})),
+    duzenFn:n=>n===4?2:3 },
+  { id:"adet", soru:"Ne kadar olsun?", ipucu:()=>"İstediğin kadar seç, hesap bende.", duzen:3,
+    secenekler:d=>Object.entries(ADETLER).map(([n,a])=>({id:+n, ad:a.ad, alt:a.alt, svg:buketCiz({...d,adet:+n,yan:null},{sar:false,vb:"85 55 230 420"})})) },
+  { id:"yan", soru:"Yanına bir şey ekleyeyim mi?", ipucu:()=>"Buketi tamamlayan küçük dokunuş.", duzen:2,
+    secenekler:()=>Object.entries(YANLAR).map(([id,y])=>({id, ad:y.ad, svg: y.yel
+      ? `<svg viewBox="-70 -160 140 170" aria-hidden="true">${dalcik(id,140,12)}</svg>`
+      : `<svg viewBox="-70 -160 140 170" aria-hidden="true"><circle cy="-75" r="34" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 6" opacity=".45"/></svg>`})) },
+  { id:"kagit", soru:"Neye sarayım?", ipucu:()=>"Kurdelesini çiçeğinin rengine göre ben seçeceğim.", duzen:2,
+    secenekler:d=>Object.entries(KAGITLAR).map(([id,k])=>({id, ad:k.ad, svg:`<svg viewBox="20 80 360 400" aria-hidden="true">${kagitArka(id,1)}${kagitOn(id,1,CICEKLER[d.cicek].renkler[d.renk].ui)}</svg>`})) },
+  { id:"ihtiyac", soru:"Son soru. Şu an sana en çok ne iyi gelir?", ipucu:()=>"Buketle ilgisi yok gibi duruyor ama var.", duzen:1,
+    secenekler:()=>Object.entries(IHTIYAC).map(([id,x])=>({id, ad:x.ad})) }
+];
+
+/* ---------- Durum ve ekranlar ---------- */
+const $ = s => document.querySelector(s);
+const ANAHTAR = "buket-v1";
+const VARSAYILAN_RENK = "#D9486E";
+let durum = {cicek:null, renk:null, adet:null, yan:null, kagit:null, ihtiyac:null};
+let adim = 0, kilit = false, cizimNo = 0;
+
+function renkAyarla(hex){
+  const k=document.documentElement.style;
+  k.setProperty("--accent",hex); k.setProperty("--on-accent",ustRenk(hex));
+}
+function goster(id){
+  ["giris","adim","sonuc"].forEach(x=>{ const el=$("#"+x); el.hidden = x!==id; el.classList.remove("gir"); });
+  const el=$("#"+id); void el.offsetWidth; el.classList.add("gir");
+  window.scrollTo(0,0);
+}
+function gecerli(d){
+  try{
+    return !!(d && CICEKLER[d.cicek] && CICEKLER[d.cicek].renkler[d.renk] && ADETLER[d.adet] && YANLAR[d.yan] && KAGITLAR[d.kagit] && IHTIYAC[d.ihtiyac]);
+  }catch(e){ return false }
+}
+
+function adimCiz(){
+  const a=ADIMLAR[adim], sec=a.secenekler(durum);
+  const duzen=a.duzenFn? a.duzenFn(sec.length) : a.duzen;
+  $("#sayac").textContent=`${adim+1} / ${ADIMLAR.length}`;
+  $("#cubuk").style.width=((adim+1)/ADIMLAR.length*100)+"%";
+  const govde=$("#adim-govde");
+  govde.innerHTML=
+    `<h1 class="soru" tabindex="-1">${a.soru}</h1><p class="ipucu">${a.ipucu(durum)}</p>`+
+    `<div class="secenekler s-${duzen}">`+sec.map(o=>
+      `<button type="button" class="secenek${durum[a.id]===o.id?" secili":""}" data-id="${o.id}">${o.svg||""}<span class="s-ad">${o.ad}</span>${o.alt?`<span class="s-alt">${o.alt}</span>`:""}</button>`
+    ).join("")+`</div>`;
+  govde.classList.remove("gir"); void govde.offsetWidth; govde.classList.add("gir");
+  window.scrollTo(0,0);
+}
+
+function sec(dugme){
+  if(kilit) return;
+  const a=ADIMLAR[adim];
+  let deger=dugme.dataset.id; if(a.id==="adet") deger=+deger;
+  if(a.id==="cicek" && durum.cicek!==deger) durum.renk=null;
+  durum[a.id]=deger;
+  dugme.parentElement.querySelectorAll(".secenek").forEach(b=>b.classList.toggle("secili",b===dugme));
+  if(a.id==="renk") renkAyarla(CICEKLER[durum.cicek].renkler[deger].ui);
+  kilit=true;
+  setTimeout(()=>{
+    kilit=false;
+    if(adim<ADIMLAR.length-1){ adim++; adimCiz(); }
+    else { try{ localStorage.setItem(ANAHTAR,JSON.stringify(durum)) }catch(e){} sonucCiz(false); }
+  },340);
+}
+
+function sonucCiz(bekliyordu){
+  const d=durum, c=CICEKLER[d.cicek], r=c.renkler[d.renk], A=ADETLER[d.adet], Y=YANLAR[d.yan], K=KAGITLAR[d.kagit], I=IHTIYAC[d.ihtiyac];
+  const ad=`${A.ad} ${kucuk(r.ad)} ${kucuk(c.ad)}`;
+  const isim=AYAR.isim.trim(), imza=AYAR.imza.trim(), mesafe=(AYAR.mesafe||"").trim(), hazirlayan=(AYAR.hazirlayan||"").trim(), yanAd=Y.kisa||Y.ad;
+  renkAyarla(r.ui);
+  const ileti=`💐 Buketimi seçtim: ${kucuk(ad)}${Y.yel?`, yanında ${kucuk(Y.ad)}`:""}, ${kucuk(K.ad)} içinde. Şu an bana en iyi gelecek şey: ${kucuk(I.ad)}.`;
+  const wa=`https://wa.me/${AYAR.whatsapp.replace(/\D/g,"")}?text=${encodeURIComponent(ileti)}`;
+  const satir=(x,y)=>`<div class="fis-satir"><span>${x}</span><i></i><span>${y}</span></div>`;
+  $("#sonuc").innerHTML=
+    `<header class="sonuc-bas"><p id="durum-yazi" class="ust" aria-live="polite">${bekliyordu?"Buketin seni bekliyordu":"Saplar kesiliyor"}</p><h1>${ad}</h1></header>`+
+    `<div class="canli">${buketCiz(d,{cls:"buket",etiket:`${ad}, ${kucuk(K.ad)} içinde`})}</div>`+
+    `<article class="etiket sonra" style="--n:0"><span class="etiket-delik"></span>`+
+      `<p class="ust">Çiçek dilinde</p><h2 class="etiket-soz">${r.soz}</h2>`+
+      `<p>${c.oz} ${r.not}</p>`+
+      `<ul class="etiket-liste"><li><b>${A.ad}</b>${A.anlam}</li><li><b>${yanAd}</b>${Y.anlam}</li><li><b>${K.ad}</b>${K.anlam}</li></ul>`+
+    `</article>`+
+    `<section class="mesaj sonra" style="--n:1">${basSvg(d.cicek,r,"mesaj-cicek")}`+
+      `<h2>Geçmiş olsun${isim?`, <em>${isim}</em>`:""}.</h2>`+
+      `<p>Hasta olduğunu bugün öğrendim. Çiçek göndereyim dedim ama aradaki yolu görünce vazgeçtim, sana ulaşana kadar solardı. Bu solmuyor, sulamak da gerekmiyor.</p>`+
+      `<p>Süslü cümle kurmayı beceremem, bilirsin. O yüzden lafı çiçeklere bıraktım.</p>`+
+      `<p>${I.mesaj}</p>`+
+      `<p>Çabuk iyileş. Benden bu kadar, kendine iyi bak.</p>`+
+      (imza?`<p class="imza">${imza}</p>`:"")+
+    `</section>`+
+    `<section class="fis sonra" style="--n:2" aria-label="Çiçekçi fişi"><h3>Çiçekçi fişi</h3><p class="fis-tarih">${new Date().toLocaleDateString("tr-TR")}</p>`+
+      satir(`${r.ad} ${kucuk(c.ad)}`,A.fis)+satir("Yanına",kucuk(yanAd))+satir("Ambalaj",kucuk(K.ad))+satir("Sipariş notu",kucuk(I.ad))+(mesafe?satir("Mesafe",mesafe):"")+satir("Teslimat",mesafe?"1 saniye":"1 saniye, kargosuz")+(hazirlayan?satir("Hazırlayan",hazirlayan):"")+
+      `<div class="fis-satir fis-toplam"><span>Tutar</span><i></i><span>1 gülümseme</span></div>`+satir("Ödeme","iyileşince")+
+      `<p class="fis-not">Mali değeri yoktur, manevi değeri vardır.</p>`+
+    `</section>`+
+    `<div class="eylemler sonra" style="--n:3"><a class="dugme" href="${wa}" target="_blank" rel="noopener">Ne seçtiğini bana da göster</a>`+
+      `<p class="kucuk">${AYAR.whatsapp.trim()?"WhatsApp açılır, mesaj hazır. Sen sadece gönder.":"WhatsApp açılır, mesaj hazır. Listeden beni seç ve gönder."}</p>`+
+      `<button id="bastan" class="dugme-yazi" type="button">Baştan seç</button></div>`;
+  goster("sonuc");
+  const sira=++cizimNo;
+  if(!bekliyordu) [[1100,"Çiçekler diziliyor"],[2250,"Kâğıda sarılıyor"],[3050,"Buketin hazır"]].forEach(([ms,yazi])=>
+    setTimeout(()=>{ const y=$("#durum-yazi"); if(y && sira===cizimNo) y.textContent=yazi },ms));
+}
+
+/* ---------- Olaylar ---------- */
+$("#basla").addEventListener("click",()=>{ adim=0; goster("adim"); adimCiz(); });
+$("#geri").addEventListener("click",()=>{ if(kilit) return; if(adim===0) goster("giris"); else { adim--; adimCiz(); } });
+$("#adim-govde").addEventListener("click",e=>{ const b=e.target.closest(".secenek"); if(b) sec(b); });
+$("#sonuc").addEventListener("click",e=>{
+  if(!e.target.closest("#bastan")) return;
+  try{ localStorage.removeItem(ANAHTAR) }catch(err){}
+  durum={cicek:null,renk:null,adet:null,yan:null,kagit:null,ihtiyac:null};
+  renkAyarla(VARSAYILAN_RENK); adim=0; goster("adim"); adimCiz();
+});
+
+/* ---------- Açılış ---------- */
+$("#vitrin").innerHTML=vitrinCiz();
+if(AYAR.isim.trim()){ const h=$("#hitap"); h.textContent=`Hoş geldin, ${AYAR.isim.trim()}.`; h.hidden=false; }
+let kayit=null;
+try{ kayit=JSON.parse(localStorage.getItem(ANAHTAR)) }catch(e){}
+if(gecerli(kayit)){ durum=kayit; sonucCiz(true); }
+</script>
+</body>
+</html>
